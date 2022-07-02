@@ -13,29 +13,62 @@
     <div id="counter">
         c: {{c}}
         
-        <span  id="aaa">
-            a: {{a}}
-           
-        </span>
-          <button  v-on:click="Dian" style="color:blue"  >点击</button>
-
+          <button  v-on:click="Dian" style="background-color:blue"  >点击</button>
          <!--双向绑定-->
-          <p>1{{ shiti }}</p>
+          <p>双向绑定:{{ shiti }}</p>
           <input v-model="c" />
+        
     </div>
-
+    <span  id="aaa">
+        数字: {{a}}
+        <button  v-on:click="Dian1" style="background-color:rgb(35, 35, 225)"  >减</button>
+    </span>
+   
     <div id="two-way-binding">
         <!--双向绑定-->
         <hr>
-      <p>双向绑定{{ shiti }}</p>
+      <p>双向绑定:{{shiti}}</p>
       <input v-model="shiti" />
 
       <input v-model="fordate.name" />
       <input v-model="fordate.password" />
+
       <button v-on:click="submit">提交</button>
+      <div v-if="ifshow">
+          <h2>v-if v-for</h2>
+      </div>
+      <!--//内联方式 ifshoww 指向方法-->
+      <button v-on:click="ifshow =!ifshow">if and show</button>
+       <ul>
+           <li>国家名字</li>
+           <li v-for="todo in list">
+            {{todo.name}}:{{todo.id}}
+           </li>
+       </ul>
 
     </div>  
+    
+<div id="todoss">
+    <h2>组件渲染</h2>
+       <ol>
+           <!--
+            现在我们为每个 todo-item 提供 todo 对象
+            todo 对象是变量，即其内容可以是动态的。
+            我们也需要为每个组件提供一个“key”，稍后再
+            作详细解释-->
+            <todo-item></todo-item>
+          <tt-item
+            v-for="item in Glist"
+            v-bind:todo="item"
+            >
+          </tt-item>
 
+        </ol>
+        <H2>循环</H2>
+        <ol>  
+           <li v-for="todo in  Glist" >{{todo.name}}</li> 
+        </ol>
+   </div>  
     <script  src="https://unpkg.com/vue@next"> </script>
   
 </body>
@@ -46,48 +79,86 @@
             data() {
                 return {
                     counter:1,
-                    c: "Hello Vue.js!'"
+                    c: "3"
                 }
+            },
+            //在这发起后端请求，拿回数据，配合路由钩子做一些事情（dom渲染完成 组件挂载完成 ）
+            mounted() {
+                setInterval(() => {
+                    this.c++
+                }, 1000)
             },
             methods:{
                 Dian(){
                 this.c+=10;
             }
         }
-       
     }
-
+    Vue.createApp(count).mount('#counter')
     const a = {
             data() {
                 return {
-                    a: "88"
+                    a: 88
                 }
             },
             mounted() {
                 setInterval(() => {
                     this.a++
                 }, 1000)
-            } ,
+            },
+            methods:{
+                Dian1(){
+                this.a-=10;
+            }
         }
+            
+    }
     Vue.createApp(a).mount('#aaa')
-    Vue.createApp(count).mount('#counter')
-    // <!--shiti 是值该变-->
+
     const Mess = {
             data() {
                 return {
-                    shiti: "spk方法",
-                    fordate:{ name:"root",password:'123'}
+                    counter:1,
+                    shiti:"spk方法",
+                    fordate:{ name:"root",password:'123'},
+                    ifshow:true,
+                    list:[{id:1,name:"中国"},{id:2,name:"老美"}]
                 }
             },
             methods:{
-            
-            submit(){
+             submit(){
             console.log(this.fordate);
+            
         }
+       
       }
    }
-      
-    
+   //创建  createApp  挂载 mount
    Vue.createApp(Mess).mount('#two-way-binding')
    
+     //子组件
+     const TtItem ={
+         //接受父组件的参数
+         props:['todo'],
+         template:`<li>这是父组件给的todo{{todo.id}} : {{todo.name}}</li>`
+        }
+     //创建vue 组件 应用
+     const app = {
+        components: {
+            TtItem // 加载一子组件;
+            },
+        data(){ 
+                return {
+                    Glist:[{id:11,name:"中国"},{id:22,name:"美国"},{id:33,name:"英国"}]
+                }
+            },
+            // 组件的其它 property
+        }
+        // 挂载 Vue 应用 到标签里
+    const App = Vue.createApp(app)
+    App.mount("#todoss")
+  
+    
+
+       
 </script>

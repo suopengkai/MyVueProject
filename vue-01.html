@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>s所彭凯第一</title>
+</head>
+
+<body>
+    
+    <div id="counter">
+        c: {{c}}
+        
+        <span  id="aaa">
+            a: {{a}}
+           
+        </span>
+          <button  v-on:click="Dian" style="color:blue"  >点击</button>
+
+         <!--双向绑定-->
+          <p>1{{ shiti }}</p>
+          <input v-model="c" />
+    </div>
+
+    <div id="two-way-binding">
+        <!--双向绑定-->
+        <hr>
+      <p>双向绑定{{ shiti }}</p>
+      <input v-model="shiti" />
+
+      <input v-model="fordate.name" />
+      <input v-model="fordate.password" />
+      <button v-on:click="submit">提交</button>
+
+    </div>
+
+    <script  src="https://unpkg.com/vue@next"> </script>
+  
+</body>
+
+</html>
+<script>
+    const count = {
+            data() {
+                return {
+                    counter:1,
+                    c: "Hello Vue.js!'"
+                }
+            },
+            methods:{
+                Dian(){
+                this.c+=10;
+            }
+        }
+       
+    }
+
+    const a = {
+            data() {
+                return {
+                    a: "88"
+                }
+            },
+            mounted() {
+                setInterval(() => {
+                    this.a++
+                }, 1000)
+            } ,
+        }
+    Vue.createApp(a).mount('#aaa')
+    Vue.createApp(count).mount('#counter')
+    // <!--shiti 是值该变-->
+    const Mess = {
+            data() {
+                return {
+                    shiti: "spk方法",
+                    fordate:{ name:"root",password:'123'}
+                }
+            },
+            methods:{
+            
+            submit(){
+            console.log(this.fordate);
+        }
+      }
+   }
+      
+    
+    Vue.createApp(Mess).mount('#two-way-binding')
+   
+</script>
